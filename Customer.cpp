@@ -1,4 +1,5 @@
 #include <optional>
+#include <algorithm>
 #include "Customer.h"
 
 Customer::Customer(const string &identity, const string &fullname)
@@ -27,11 +28,11 @@ int Customer::getNumOfAccounts() const {
 }
 
 optional<shared_ptr<Account>> Customer::findAccount(const string &iban) const {
-    for (auto &acc : accounts) {
-        if (acc->getIban() == iban)
-            return optional<shared_ptr<Account>>(acc);
-    }
-    return nullopt;
+    auto item= find_if(accounts.begin(),accounts.end(),[iban](auto& acc){
+       return acc->getIban()==iban;
+    });
+    if (item==accounts.end()) return nullopt;
+    return optional<shared_ptr<Account>>(*item);
 }
 
 optional<shared_ptr<Account>> Customer::findAccount(int index) const {
