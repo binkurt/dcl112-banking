@@ -7,7 +7,6 @@
 
 struct Account {
 private:
-    // attribute, state, data
     const std::string iban;
 protected:
     double balance;
