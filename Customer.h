@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include <optional>
+#include <ostream>
 #include "Account.h"
 
 using namespace std;
@@ -14,7 +15,9 @@ class Customer {
     string fullname;
     vector<shared_ptr<Account>> accounts;
 public:
-    Customer(const string &identity, const string &fullname);
+    Customer() = default;
+
+    Customer(const string &&identity, const string &&fullname);
 
     const string &getIdentity() const;
 
@@ -35,6 +38,8 @@ public:
     double operator()() const;
 
     int getNumOfAccounts() const;
+
+    friend ostream &operator<<(ostream &os, const Customer &customer);
 };
 
 

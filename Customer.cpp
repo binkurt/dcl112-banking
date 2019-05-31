@@ -2,7 +2,7 @@
 #include <algorithm>
 #include "Customer.h"
 
-Customer::Customer(const string &identity, const string &fullname)
+Customer::Customer(const string &&identity, const string &&fullname)
         : identity(identity), fullname(fullname) {
 
 }
@@ -28,10 +28,10 @@ int Customer::getNumOfAccounts() const {
 }
 
 optional<shared_ptr<Account>> Customer::findAccount(const string &iban) const {
-    auto item= find_if(accounts.begin(),accounts.end(),[iban](auto& acc){
-       return acc->getIban()==iban;
+    auto item = find_if(accounts.begin(), accounts.end(), [iban](auto &acc) {
+        return acc->getIban() == iban;
     });
-    if (item==accounts.end()) return nullopt;
+    if (item == accounts.end()) return nullopt;
     return optional<shared_ptr<Account>>(*item);
 }
 
@@ -50,7 +50,12 @@ optional<shared_ptr<Account>> Customer::operator[](int index) const {
 double Customer::operator()() const {
     //double totalBalance = double();
     auto totalBalance = 0.0; // c++11
-    for (const auto& acc : accounts)
+    for (const auto &acc : accounts)
         totalBalance += acc->getBalance();
     return totalBalance;
+}
+
+ostream &operator<<(ostream &os, const Customer &customer) {
+    os << "identity: " << customer.identity << " fullname: " << customer.fullname;
+    return os;
 }
